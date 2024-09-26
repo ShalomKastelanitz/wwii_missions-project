@@ -1,29 +1,41 @@
 from flask import Flask, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text  # ודא שאתה מייבא את text
+from models import db, Mission
 from config import config
 
 app = Flask(__name__)
 app.config.from_object(config)
-db = SQLAlchemy(app)
+db.init_app(app)
 
 @app.route('/api/mission', methods=['GET'])
 def get_missions():
-    query = text("SELECT * FROM mission LIMIT 10;")  # השתמש ב-text
-    result = db.session.execute(query)
-    missions = [{column: row[i] for i, column in enumerate(result.keys())} for row in result]
-    return jsonify(missions)
+    missions = Mission.query.limit(10).all()
+    missions_list = [
+        {
+            'mission_id': mission.mission_id,
+            'mission_date': mission.mission_date,
+            'mission_type': mission.mission_type,
+            'target_country': mission.target_country
+        }
+        for mission in missions
+    ]
+    return jsonify(missions_list)
+
 
 @app.route('/api/mission/<int:mission_id>', methods=['GET'])
 def get_mission(mission_id):
-    query = text("SELECT * FROM mission WHERE mission_id = :id;")
-    result = db.session.execute(query, {'id': mission_id}).fetchone()
+    mission = Mission.query.get(mission_id)
 
-    if result is None:
+    if mission is None:
         return jsonify({'error': 'Mission not found'}), 404
 
-    mission = {column: result[i] for i, column in enumerate(result.keys())}
-    return jsonify(mission)
+    mission_data = {
+        'mission_id': mission.mission_id,
+        'mission_date': mission.mission_date,
+        'mission_type': mission.mission_type,
+        'target_country': mission.target_country
+    }
+    return jsonify(mission_data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

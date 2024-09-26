@@ -1,0 +1,18 @@
+הרצנו את השאילתות לפני אינדוקס והזמן שלקח לזה זה
+Execution Time: 153.647 ms זמן ביצוע כולל
+זה הזמן שלקח להריץ את השאילתה וזה
+עלוןת כוללת(Total Cost)
+6086.81
+Memory Usage
+25kB
+
+ואחרי שעשינו אינקס לעיר ושנה
+Execution Time: 24.272 ms זמן ביצוע כולל
+עלוןת כוללת(Total Cost)
+2155.76
+Memory Usage: 369kB
+
+לסיכום נכון שאחרי האינדוקס השימוש בזיכרון גבווה יותר אבל זה שווה לי לאנדקס כי הזצן הסופי התקצר באופן משמעותי
+
+כך יצרתי את האינדקסים CREATE INDEX idx_mission_date_year ON mission (EXTRACT(YEAR FROM mission_date));
+CREATE INDEX idx_country ON mission (country);
