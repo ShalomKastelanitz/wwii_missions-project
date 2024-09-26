@@ -56,7 +56,7 @@ def normalize_data():
         """, (air_force, country_id))
 
     # עדכון הטבלה המקורית עם המפתחות הזרים
-    cursor.execute("SELECT \"Mission ID\", Country, \"air_force\" FROM mission")
+    cursor.execute("SELECT mission_id, Country,air_force FROM mission")
     rows = cursor.fetchall()
 
     for row in rows:
@@ -70,7 +70,7 @@ def normalize_data():
         cursor.execute("""
             UPDATE mission
             SET country_id = %s, air_force_id = %s
-            WHERE \"Mission ID\" = %s
+            WHERE mission_id = %s
         """, (country_id, air_force_id, mission_id))
 
     connection.commit()

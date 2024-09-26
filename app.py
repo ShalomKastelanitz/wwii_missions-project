@@ -1,23 +1,22 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from config import Config
+from sqlalchemy import text  # ודא שאתה מייבא את text
+from config import config
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object(config)
 db = SQLAlchemy(app)
-
 
 @app.route('/api/mission', methods=['GET'])
 def get_missions():
-    query = "SELECT * FROM missions;"  # מחזיר את כל העמודות
+    query = text("SELECT * FROM mission LIMIT 10;")  # השתמש ב-text
     result = db.session.execute(query)
     missions = [{column: row[i] for i, column in enumerate(result.keys())} for row in result]
     return jsonify(missions)
 
-
 @app.route('/api/mission/<int:mission_id>', methods=['GET'])
 def get_mission(mission_id):
-    query = "SELECT * FROM missions WHERE id = :id;"
+    query = text("SELECT * FROM mission WHERE mission_id = :id;")
     result = db.session.execute(query, {'id': mission_id}).fetchone()
 
     if result is None:
@@ -25,7 +24,6 @@ def get_mission(mission_id):
 
     mission = {column: result[i] for i, column in enumerate(result.keys())}
     return jsonify(mission)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
