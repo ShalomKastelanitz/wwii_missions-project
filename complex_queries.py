@@ -15,7 +15,7 @@ def get_mission_data(year, connection):
         # יצירת אובייקט cursor
         cursor = connection.cursor()
 
-        # הגדרת השאילתא
+
         query = """
         SELECT 
             air_force,

@@ -5,10 +5,10 @@ from config import config
 app = Flask(__name__)
 app.config.from_object(config)
 db.init_app(app)
-
+#שליפה של כל המשימות
 @app.route('/api/mission', methods=['GET'])
 def get_missions():
-    missions = Mission.query.limit(10).all()
+    missions = Mission.query.limit(100).all()
     missions_list = [
         {
             'mission_id': mission.mission_id,
@@ -20,7 +20,7 @@ def get_missions():
     ]
     return jsonify(missions_list)
 
-
+#שליפה לפי id
 @app.route('/api/mission/<int:mission_id>', methods=['GET'])
 def get_mission(mission_id):
     mission = Mission.query.get(mission_id)
