@@ -87,7 +87,7 @@ def get_average_damage_assessment(connection):
         query = """
         SELECT 
             country,
-            AVG(bomb_damage_assessment) AS average_damage_assessment
+          count (bomb_damage_assessment) AS average_damage_assessment
         FROM mission
         WHERE attacking_aircraft > 5
         GROUP BY country
